@@ -8,5 +8,5 @@ class Item < ApplicationRecord
     tax = 1.1
     (price * tax).floor
   end
-  
+
 end

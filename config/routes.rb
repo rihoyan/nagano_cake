@@ -18,10 +18,10 @@ Rails.application.routes.draw do
     resources :addresses, except:[:new, :show]
   end
 
-  delete 'cart_items/' => 'public/cart_items#alldelete'
+  delete 'cart_items/' => 'public/cart_items#alldelete',as: :alldelete
   get 'customers/destroy' => 'public/customers#confirm'
   patch 'customers/destroy' => 'public/customers#destroy'
-  post 'orders/' => 'public/orders#confirm'
+  post 'orders/' => 'public/orders#confirm',as: :orders_confirm
   get 'orders/' => 'public/orders#complete'
   root :to => 'public/homes#top'
   get 'about/' => 'public/homes#about'
