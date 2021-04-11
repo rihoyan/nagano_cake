@@ -9,6 +9,14 @@ Rails.application.routes.draw do
   get 'customers/sign_up' => 'public/registrations#new', as: :new_customer_registration
   post 'customers' => 'public/registrations#create', as: :customer_registration
   end
+  
+  delete 'cart_items/' => 'public/cart_items#alldelete',as: :alldelete
+  get 'customers/destroy' => 'public/customers#confirm'
+  patch 'customers/destroy' => 'public/customers#destroy'
+  post 'orders/confirm' => 'public/orders#confirm',as: :orders_confirm
+  get 'orders/complete' => 'public/orders#complete',as: :orders_complete
+  root :to => 'public/homes#top'
+  get 'about/' => 'public/homes#about'
 
   scope module: :public do
     resources :items, only: [:index, :show]
@@ -17,14 +25,6 @@ Rails.application.routes.draw do
     resources :orders, only:[:index, :create, :new, :show]
     resources :addresses, except:[:new, :show]
   end
-
-  delete 'cart_items/' => 'public/cart_items#alldelete',as: :alldelete
-  get 'customers/destroy' => 'public/customers#confirm'
-  patch 'customers/destroy' => 'public/customers#destroy'
-  post 'orders/' => 'public/orders#confirm',as: :orders_confirm
-  get 'orders/' => 'public/orders#complete'
-  root :to => 'public/homes#top'
-  get 'about/' => 'public/homes#about'
 
   devise_for :admin, controllers: {
     sessions:      'admin/sessions',
@@ -39,7 +39,6 @@ Rails.application.routes.draw do
     resources :items, except:[:destroy]
     resources :customers, only:[:index, :show, :edit, :update]
     root :to => 'homes#top', as: 'top'
-
   end
 
 end

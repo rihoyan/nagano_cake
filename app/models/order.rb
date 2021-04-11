@@ -12,7 +12,7 @@ class Order < ApplicationRecord
       発送済み: 4
   }
 
- belongs_to :Customer
+ belongs_to :customer
  has_many :order_items,dependent: :destroy
- 
+
 end

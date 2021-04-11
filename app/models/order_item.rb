@@ -6,10 +6,10 @@ class OrderItem < ApplicationRecord
       製作完了: 3
   }
 
-  belongs_to :Item
-  belongs_to :Order
+  belongs_to :item
+  belongs_to :order
 
-  def subtotal
+  def sub_total
     price * amount
   end
 end

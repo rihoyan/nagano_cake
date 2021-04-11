@@ -24,8 +24,8 @@ class Public::CartItemsController < ApplicationController
   end
 
   def alldelete
-    cart_item = CartItem.find_by(customer_id: current_customer.id)
-    cart_item.destroy
+    cart_item = CartItem.where(customer_id: current_customer.id)
+    cart_item.destroy_all
     redirect_to cart_items_path
   end
 
