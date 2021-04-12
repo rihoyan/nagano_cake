@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row my-2">
-    <h3><% @customer.fullname %>さんの会員詳細</h3>
+    <h3><%= @customer.fullname %>さんの会員詳細</h3>
   </div>
 
   <div class="row">
@@ -36,10 +36,14 @@
         </tr>
         <tr>
           <th>会員ステータス</th>
-          <td><<%= @customer.is_active %></td>
+        <% if @customer.is_active == true %>
+        <td class="text-success">有効</td>
+        <% else %>
+        <td class="text-secondary">退会</td>
+        <% end %>
         </tr>
       </table>
       <%= link_to "編集する",edit_admin_customer_path(@customer) ,class: "btn btn-success"%>
-      <%= link_to "注文履歴一覧を見る",admin_top_path(@customer) ,class: "btn btn-primary"%>
+      <%= link_to "注文履歴一覧を見る",admin_top_path,class: "btn btn-primary"%>
     </div>
 </div>

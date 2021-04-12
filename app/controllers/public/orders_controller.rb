@@ -1,4 +1,5 @@
 class Public::OrdersController < ApplicationController
+  before_action :authenticate_customer!
 
   def new
     @addresses = Address.where(customer_id: current_customer.id)
@@ -7,7 +8,7 @@ class Public::OrdersController < ApplicationController
   end
 
   def confirm
-    #byebug
+    # byebug
     session[:cartitem] = CartItem.where(customer_id: current_customer.id)
     @sum = 0
     session[:cartitem].each do |cart_item|
@@ -18,16 +19,19 @@ class Public::OrdersController < ApplicationController
     session[:order][:shipping_cost] = 800.to_i
     session[:order][:total_payment] = session[:order][:shipping_cost].to_i + @sum.to_i
 		session[:order][:payment_method] = params[:order][:payment_method].to_i
+		session[:address_btn]  = params[:order][:address_btn].to_i
 
 		if params[:order][:address_btn].to_i == 0
 		  session[:order][:postal_code] = "〒" + current_customer.postal_code
       session[:order][:address] = current_customer.address
       session[:order][:name] = current_customer.fullname
+
 		elsif params[:order][:address_btn].to_i == 1
 		  address = Address.find(params[:order][:address_info])
 		  session[:order][:postal_code] = address.postal_code
 		  session[:order][:address] = address.addresses
 		  session[:order][:name] = address.name
+
 		else
 		  session[:order][:postal_code] = params[:order][:postal_code]
       session[:order][:address] = params[:order][:address]
@@ -46,8 +50,20 @@ class Public::OrdersController < ApplicationController
         @order_items.amount = i.amount
         @order_items.save
       end
+      if session[:address_btn].to_i == 2
+        address = Address.new
+        address.customer_id = current_customer.id
+        address.postal_code = session[:order]["postal_code"]
+        address.addresses = session[:order]["address"]
+        address.name = session[:order]["name"]
+        # binding.pry
+        address.save
+      end
       cart_items.destroy_all
       redirect_to orders_complete_path
+    else
+      flash[:danger] = "注文に失敗しました。配送先を確認してください"
+      redirect_to new_order_path
     end
   end
 

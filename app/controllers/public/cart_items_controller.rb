@@ -1,4 +1,5 @@
 class Public::CartItemsController < ApplicationController
+  before_action :authenticate_customer!
 
   def index
     @cart_items = CartItem.where(customer_id: current_customer.id)
@@ -7,8 +8,13 @@ class Public::CartItemsController < ApplicationController
   def create
     @cart_item = CartItem.new(cart_item_params)
     @cart_item.customer_id = current_customer.id
-    @cart_item.save
-    redirect_to cart_items_path
+    if @cart_item.save
+      redirect_to cart_items_path
+    else
+      flash[:danger] = "カートの追加に失敗しました。個数を選択してください"
+      @cart_items = CartItem.where(customer_id: current_customer.id)
+      render :index
+    end
   end
 
   def update

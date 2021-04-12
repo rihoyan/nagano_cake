@@ -56,14 +56,14 @@
         <th>個数</th>
         <th>小計</th>
       </tr>
+       <% @order.order_items.each do |order_item| %>
       <tr>
-        <% @order.order_items.each do |order_item| %>
         <td><%= order_item.item.name %></td>
         <td><%= (order_item.price).to_s(:delimited) %></td>
         <td><%= order_item.amount %></td>
         <td><%= (order_item.sub_total).to_s(:delimited) %></td>
-        <% end %>
       </tr>
+      <% end %>
     </table>
   </div>
 </div>

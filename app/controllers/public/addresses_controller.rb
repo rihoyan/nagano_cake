@@ -1,4 +1,5 @@
 class Public::AddressesController < ApplicationController
+  before_action :authenticate_customer!
 
   def index
     @address = Address.new
@@ -8,9 +9,15 @@ class Public::AddressesController < ApplicationController
   def create
     @address = Address.new(address_params)
     @address.customer_id = current_customer.id
-    p @address
-    @address.save!
-    redirect_to addresses_path
+    if @address.save
+      flash[:success] = "配送先を登録しました!"
+      redirect_to addresses_path
+    else
+      flash[:danger] = "配送先の登録に失敗しました"
+      @address = Address.new
+      @addresses = Address.where(customer_id: current_customer.id)
+      render "index"
+    end
   end
 
   def edit
@@ -18,6 +25,9 @@ class Public::AddressesController < ApplicationController
   end
 
   def update
+    address = Address.find(params[:id])
+    address.update(address_params)
+    redirect_to addresses_path
   end
 
   def destroy

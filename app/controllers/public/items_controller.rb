@@ -1,4 +1,6 @@
 class Public::ItemsController < ApplicationController
+  
+
   def index
     @item = Item.where(is_active: 'true').count
     @items = Item.order(:created_at)

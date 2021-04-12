@@ -14,8 +14,11 @@
   <body>
     <nav class="navbar navbar-dark bg-dark navbar-fixed-top navbar-expand-lg">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">LOGO</a>
+        <%= link_to root_path do %>
+          <i class="navbar-brand fas fa-birthday-cake">ながのCAKE</i>
+        <% end %>
       </div>
+
       <% if admin_signed_in? %>
       <ul class="nav navbar-nav ml-auto">
         <li class="nav-item"><%= link_to "商品一覧", admin_items_path ,class: "btn btn-outline-secondary mr-4"%></li>

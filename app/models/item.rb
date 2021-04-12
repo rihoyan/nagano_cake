@@ -3,6 +3,11 @@ class Item < ApplicationRecord
   belongs_to :genre
   has_many :order_items
   attachment :image
+  
+  validates :name, presence: true
+  validates :image, presence: true
+  validates :introduction, presence: true
+  validates :price, presence: true
 
   def taxprice
     tax = 1.1

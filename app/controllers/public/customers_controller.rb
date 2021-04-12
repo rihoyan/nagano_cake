@@ -1,4 +1,6 @@
 class Public::CustomersController < ApplicationController
+    before_action :authenticate_customer!
+    
     def show
         @customer = current_customer
     end
@@ -9,13 +11,17 @@ class Public::CustomersController < ApplicationController
 
     def update
         customer = current_customer
-        customer.update(customer_params)
-        redirect_to customers_path
+        if customer.update(customer_params)
+            redirect_to customers_path
+        else
+            redirect_to edit_customers_path
+        end
     end
 
     def destroy
         customer = current_customer
-        customer.destroy
+        customer.update(is_active: false)
+        reset_session
         redirect_to root_path
     end
 

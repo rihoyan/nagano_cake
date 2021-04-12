@@ -1,6 +1,6 @@
 class Admin::CustomersController < Admin::ApplicationController
   def index
-    @customers = Customer.page.reverse_order
+    @customers = Customer.all.page(params[:page])
   end
 
   def show
@@ -13,8 +13,15 @@ class Admin::CustomersController < Admin::ApplicationController
 
   def update
     customer = Customer.find(params[:id])
-    customer.update
-    redirect_to admin_customer_path(params[:id])
+    if customer.update(customer_params)
+      flash[:success] = "会員情報を更新しました！"
+      redirect_to admin_customer_path(params[:id])
+    else
+      flash[:danger] = "更新に失敗しました"
+      @customer = Customer.find(params[:id])
+      render :edit
+
+    end
   end
 
   private
